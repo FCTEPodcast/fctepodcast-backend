@@ -1,0 +1,41 @@
+services:
+  fctepodcast-api:
+    container_name: fctepodcast-api
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+    ports:
+      - ${API_PORT}:${API_PORT}
+    depends_on:
+      - fctepodcast-db
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - fctepodcast-network
+
+  fctepodcast-db:
+    container_name: fctepodcast-db
+    image: postgres:14.18
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - 5432:5432
+    volumes:
+      - fctepodcast-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - fctepodcast-network
+
+volumes:
+  fctepodcast-db-data:
+    driver: local
+    
+
+networks:
+  fctepodcast-network:
+    driver: bridge
