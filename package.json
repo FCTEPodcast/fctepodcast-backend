@@ -10,6 +10,14 @@
     "start": "node dist/app.js",
     "lint": "eslint ."
   },
+  "jest": {
+    "coverageDirectory": "coverage",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FCTEPodcast/fctepodcast-backend.git"
