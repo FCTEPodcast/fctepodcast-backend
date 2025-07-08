@@ -65,3 +65,5 @@ app.listen(API_PORT, () => {
   );
   console.log(chalk.blue.bold("=============================="));
 });
+
+export { app };
