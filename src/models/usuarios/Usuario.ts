@@ -31,6 +31,7 @@ export class Usuario {
   ativo!: boolean;
 
   @OneToMany(
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     () => require("../episodio/Episodio").Episodio,
     (episodio: Episodio) => episodio.curtidas
   )
