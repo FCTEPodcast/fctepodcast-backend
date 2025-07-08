@@ -1,15 +1,23 @@
 import request from "supertest";
 import { app } from "../../app";
 
-jest.mock("typeorm", () => {
-  const original = jest.requireActual("typeorm");
-  return {
-    ...original,
-    AppDataSource: jest.fn().mockImplementation(() => ({
-      initialize: jest.fn().mockResolvedValue(true),
-      getRepository: jest.fn(),
-    })),
-  };
+jest.mock("../../config/typeorm/DataSource", () => ({
+  AppDataSource: {
+    initialize: jest.fn().mockResolvedValue(true),
+    // Se você usa outros métodos como destroy, pode mockar aqui também
+    destroy: jest.fn().mockResolvedValue(true),
+  },
+}));
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let server: any;
+
+beforeAll((done) => {
+  server = app.listen(0, done); // usa porta dinâmica
+});
+
+afterAll((done) => {
+  server.close(done); // fecha o servidor para Jest finalizar
 });
 
 describe("Health Check", () => {
